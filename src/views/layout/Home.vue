@@ -32,6 +32,12 @@ import Top from './Top.vue'
 export default class Home extends Vue {
     height: Number = 500;
     mounted () {
+      this.initHeight()
+      window.addEventListener('resize', () => {
+        this.initHeight()
+      })
+    }
+    initHeight () {
       this.height = window.innerHeight
     }
 }

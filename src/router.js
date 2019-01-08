@@ -1,16 +1,17 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import Home from './views/layout/Home.vue';
-const Test = () => import(/* webpackChunkName: "about" */ './views/test/Test.vue');
-const Test2 = () => import(/* webpackChunkName: "about" */ './views/test/Test2.vue');
-const TableTemplate = () => import(/* webpackChunkName: "about" */ './components/TableLayout.vue');
+const Test = () => import('./views/test/Test.vue');
+const Test2 = () => import('./views/test/Test2.vue');
+const Demo = () => import('./views/test/Demo.vue');
+const Login = () => import('./views/login/Login.vue');
 Vue.use(Router);
 const router = new Router({
     routes: [
-        // @ts-ignore
-        { path: '/404', hidden: true, component: () => import('./views/error/404.vue') },
-        { path: '*', hidden: true, redirect: '/404' },
-        { path: '/', hidden: true, redirect: '/demo/test' },
+        { path: '/404', component: () => import('./views/error/404.vue'), meta: { hidden: true, } },
+        { path: '*', redirect: '/404', meta: { hidden: true } },
+        { path: '/', redirect: '/demo/test', meta: { hidden: true } },
+        { path: '/login', component: Login, meta: { hidden: true } },
         {
             path: '/demo',
             name: 'home',
@@ -29,12 +30,17 @@ const router = new Router({
                     meta: { title: '文章列表' },
                     component: Test2
                 },
+                {
+                    path: 'demo',
+                    name: 'demo',
+                    meta: { title: 'demo' },
+                    component: Demo
+                },
             ]
         },
     ]
 });
 router.beforeEach((to, from, next) => {
-    // todo 做某些判断
     next();
 });
 router.afterEach((to, from) => {

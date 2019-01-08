@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
+    "removeComments": true,
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -23,7 +26,9 @@
       "esnext",
       "dom",
       "dom.iterable",
-      "scripthost"
+      "scripthost",
+      "es5",
+      "es2015.promise"
     ]
   },
   "include": [
@@ -34,6 +39,7 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "src/**/*.js"
   ]
 }

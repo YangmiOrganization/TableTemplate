@@ -10,13 +10,7 @@ export class Page {
         this.total = total;
     }
 }
-/**
- * mixins
- */
 let PageMixin = class PageMixin extends Vue {
-    /**
-     * mixins
-     */
     constructor() {
         super(...arguments);
         this.pageObj = new Page();
@@ -26,19 +20,16 @@ let PageMixin = class PageMixin extends Vue {
     created() {
         this.useMethod();
     }
-    // 查询按钮
     search() {
         this.pageObj.page = 1;
         this.useMethod();
     }
     ;
-    // 分页长度改变
     handleSizeChange(val) {
         this.pageObj.limit = val;
         this.useMethod();
     }
     ;
-    // 分页页码改变
     handleCurrentChange(val) {
         this.pageObj.page = val;
         this.useMethod();
@@ -51,7 +42,6 @@ let PageMixin = class PageMixin extends Vue {
         return queryParams;
     }
     useMethod() {
-        // @ts-ignore
         this[this.method]();
     }
     ;

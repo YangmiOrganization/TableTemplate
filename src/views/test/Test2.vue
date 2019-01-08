@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import TableLayout from '../../components/TableLayout.vue'
+import TableLayout from '../../components/table/TableLayout.vue'
 import PageMixins, { Page } from './../../mixin/mixin'
 
   @Component({
@@ -31,13 +31,14 @@ export default class Test2 extends PageMixins {
       { 'prop': 'timestamp', 'label': '时间', 'slot': 'timestamp' },
       { 'prop': 'author', 'label': '作者' },
       { 'prop': 'reviewer', 'label': '审核人' },
-      { 'prop': 'title', 'label': '标题' },
+      { 'prop': 'title', 'label': '标题', 'tips': true },
       { 'prop': 'forecast', 'label': '预测' },
       { 'prop': 'displayTime', 'label': '出版时间' },
       { 'prop': 'pageviews', 'label': '浏览量' }
     ];
     method:string = 'getList';
     async getList (pageObj:Page) {
+      // @ts-ignore
       let res = await this.$get(this.$UrlConstants.ARTICLE_URL + '/list', this.getQueryParams())
       pageObj = pageObj || this.pageObj
       this.pageObj = pageObj || this.pageObj

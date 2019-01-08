@@ -1,19 +1,11 @@
 <!--suppress ALL -->
 <template>
   <!--table模板-->
-  <table-layout ref="table-layout" @getList="getList" :pageObj="pageObj" :header="header" @selectionChange="handleSelectionChange" :tableData="tableData">
+  <table-layout @handleRowClick="handleRowClick" @handleCellClick="handleCellClick" ref="table-layout" :spanMethod="spanMethod" @getList="getList" :pageObj="pageObj" :header="header" @selectionChange="handleSelectionChange" :tableData="tableData">
     <template slot="top-left">
-      <el-button>添加</el-button>
+      <el-button type="primary">todo</el-button>
     </template>
     <template slot="top-right">
-      <el-date-picker
-        value-format="yyyy-MM-dd"
-        v-model="queryParams.timeRange"
-        type="datetimerange"
-        range-separator="至"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期">
-      </el-date-picker>
       <el-input v-model="queryParams.keyword" placeholder="关键字" style="width: 12rem"></el-input>
       <el-button @click="search">搜索</el-button>
     </template>
@@ -44,8 +36,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import TableLayout from '../../components/TableLayout.vue'
-import PageMixins from './../../mixin/mixin'
+import TableLayout from '../../components/table/TableLayout.vue'
+import PageMixins, { Page } from './../../mixin/mixin'
 
 @Component({
   components: {
@@ -53,60 +45,66 @@ import PageMixins from './../../mixin/mixin'
   },
   mixins: [PageMixins]
 })
-export default class Test extends Vue {
+export default class Test extends PageMixins {
+  spanMethod ({ row, column, rowIndex, columnIndex }) {
+    if (columnIndex === 2) {
+      if (rowIndex % 2 === 0) {
+        return {
+          rowspan: 2,
+          colspan: 1
+        }
+      } else {
+        return {
+          rowspan: 0,
+          colspan: 0
+        }
+      }
+    }
+  };
   header:Array<object> = [
-    { 'type': 'selection' },
-    { 'type': 'expand', 'slot':'expand' },
-    { 'type': 'index', fixed: true },
-    { 'prop': 'name', 'label': '姓名', 'slot': 'name-phone' },
-    { 'prop': 'loginName', 'label': '登录名' },
-    { 'prop': 'nickName', 'label': '昵称' },
-    { 'prop': 'avatar', 'label': '头像', width: 300 ,'slot': 'avatar'},
-    { 'prop': 'age', 'label': '年龄' },
-    { 'prop': 'status', 'label': '状态' },
-    { 'prop': 'acorpName', 'label': '公司名称' },
-    { 'prop': 'departmentName', 'label': '部门名称' },
-    { 'prop': 'description', 'label': '描述',  },
-    { 'prop': 'time', 'label': '时间', children: [
-        { 'prop': 'createTime', 'label': '创建时间' },
-        { 'prop': 'updateTime', 'label': '更新时间' },
+    { type: 'selection' },
+    { type: 'expand', slot: 'expand' },
+    { type: 'index', fixed: true },
+    { prop: 'name', label: '姓名', slot: 'name-phone' },
+    { prop: 'loginName', label: '登录名' },
+    { prop: 'nickName', label: '昵称' },
+    { prop: 'avatar', label: '头像', width: 300, slot: 'avatar' },
+    { prop: 'age', label: '年龄' },
+    { prop: 'status', label: '状态' },
+    { prop: 'acorpName', label: '公司名称' },
+    { prop: 'departmentName', label: '部门名称' },
+    { prop: 'description', label: '描述' },
+    { prop: 'time',
+      label: '时间',
+      children: [
+        { prop: 'createTime', label: '创建时间' },
+        { prop: 'updateTime', label: '更新时间' }
       ] },
-    { 'label': '操作','slot': 'operator', fixed: 'right',width: 180 }
+    { label: '操作', slot: 'operator', fixed: 'right', width: 180 }
   ];
-  queryParams:{
-    keyword: '',
-    timeRange: []
-  };
   method:string = 'getList';
-  handleView(obj:object){
-    console.log("查看对象:%o",obj)
+  handleView (obj:object) {
+    console.log('查看对象:%o', obj)
   };
-  handleDel(obj:object){
-    console.log("删除对象:%o",obj)
+  handleDel (obj: object) {
+    console.log('删除对象:%o', obj)
   };
-  async getList (pageObj:object) {
-    let res = await this.$get(this.$UrlConstants.ARTICLE_URL+'/list',this.getQueryParams())
+  async getList (pageObj?:Page) {
+    // @ts-ignore
+    let res = await this.$get(this.$UrlConstants.ARTICLE_URL + '/list', this.getQueryParams())
     pageObj = pageObj || this.pageObj
     this.pageObj = pageObj || this.pageObj
     this.pageObj.total = res.total
     this.tableData = res.items
-    /*this.$refs['table-layout'].pageObj = pageObj || this.pageObj
-    this.$refs['table-layout'].pageObj.total = res.total
-    this.$refs['table-layout'].tableData = res.items*/
   };
-  // 如果需要对查询条件做特殊处理，这里重写此方法。
-  getQueryParams () {
-    let queryParams = { ...this.queryParams, ...this.pageObj }
-    if(queryParams.timeRange){
-      queryParams['startTime'] = queryParams.timeRange[0]
-      queryParams['endTime'] = queryParams.timeRange[1]
-    }
-    delete queryParams['timeRange']
-    delete queryParams['total']
-    return queryParams;
-  };
-  handleSelectionChange(val:Array<object>){
+  handleSelectionChange (val:Array<object>) {
     console.log(val)
+  }
+  handleRowClick (row:any, event:any, column:any) {
+    console.log('点击行对象:%o', row)
+  }
+  handleCellClick (row:any, column:any, cell:any, event:any) {
+    console.log('点击单元格对象:%o', cell)
   }
 }
 </script>

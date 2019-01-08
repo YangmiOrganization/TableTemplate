@@ -6,9 +6,7 @@ import $moment from 'moment';
 import './assets/mock/index.js';
 import './plugins/element.js';
 import 'normalize.css/normalize.css';
-// 导入封装好的axios
 import './axios.tool';
-// url常量
 import { UrlConstants } from './assets/constants/constants';
 Vue.config.productionTip = false;
 Vue.prototype.$UrlConstants = new UrlConstants();

@@ -23,7 +23,7 @@ export default class Menu extends Vue {
   isCollapse:boolean = true;
   created () {
     // @ts-ignore
-    this.menus = this.$router.options.routes.filter((item:any) => !item.hidden)
+    this.menus = this.$router.options.routes.filter((item:any) => item.meta && !item.meta.hidden)
   }
 }
 </script>
