@@ -9,15 +9,15 @@
         </div>
         <div class="right">
           <slot class="right" name="top-right">
-            <el-button size="mini" @click="search">右边按钮</el-button>
+            <el-button size="mini">右边按钮</el-button>
           </slot>
         </div>
       </div>
       <!--table-->
       <div class="table">
-        <table-template :header="header" ref="table" :tableData="tableData" @selectionChange="handleSelectionChange">
-            <template v-for="i in header" v-if="i.slot" :slot="i.slot" slot-scope="{scope}">
-              <slot :name="i.slot" :scope="scope">{{i.slot}}</slot>
+        <table-template @handleRowClick="handleRowClick" @handleCellClick="handleCellClick" :spanMethod="spanMethod" :headers="headers" ref="table" :tableData="tableData" @selectionChange="handleSelectionChange">
+          <template  v-for="i in headers"  :slot="i.slot" slot-scope="{scope}">
+              <slot v-if="i.slot" :name="i.slot" :scope="scope">{{i.slot}}</slot>
             </template>
         </table-template>
       </div>
@@ -31,29 +31,35 @@
     </div>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop, Mixins } from 'vue-property-decorator'
-import PageMixins from './../mixin/mixin'
+<script>
 import TableTemplate from './TableTemplate.vue'
-
-@Component({
+export default {
+  name: 'table-layout',
+  props: {
+    spanMethod: { type: Function },
+    headers: { type: Array, required: true },
+    tableData: { type: Array, required: true },
+    pageObj: { type: Object, required: true }
+  },
   components: { TableTemplate },
-  mixins: [PageMixins]
-})
-export default class TableLayout extends Vue {
-  method:string = 'emitEvent';
-  @Prop() header;
-  @Prop() tableData;
-  @Prop()pageObj;
-  emitEvent () {
-    let method = ''
-    if (this.$parent) {
-      method = this.$parent.method
+  methods: {
+    // 分页长度改变
+    handleSizeChange (val) {
+      this.$emit('sizeChange', val)
+    },
+    // 分页页码改变
+    handleCurrentChange (val) {
+      this.$emit('currentChange', val)
+    },
+    handleSelectionChange (val) {
+      this.$emit('selectionChange', val)
+    },
+    handleRowClick (row, event, column) {
+      this.$emit('handleRowClick', row, event, column)
+    },
+    handleCellClick (row, column, cell, event) {
+      this.$emit('handleCellClick', row, column, cell, event)
     }
-    this.$emit(method || this.method, this.pageObj)
-  }
-  handleSelectionChange (val) {
-    this.$emit('selectionChange', val)
   }
 }
 </script>

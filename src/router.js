@@ -1,48 +1,43 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Home from './views/layout/Home.vue';
-const Test = () => import('./views/test/Test.vue');
-const Test2 = () => import('./views/test/Test2.vue');
-const Demo = () => import('./views/test/Demo.vue');
-const Login = () => import('./views/login/Login.vue');
-Vue.use(Router);
-const router = new Router({
-    routes: [
-        { path: '/404', component: () => import('./views/error/404.vue'), meta: { hidden: true, } },
-        { path: '*', redirect: '/404', meta: { hidden: true } },
-        { path: '/', redirect: '/demo/test', meta: { hidden: true } },
-        { path: '/login', component: Login, meta: { hidden: true } },
+import Vue from 'vue'
+import Router from 'vue-router'
+const Home = () => import('./views/layout/Home')
+const Test = () => import('./views/test/Test')
+const Parent = () => import('./views/test/Parent')
+const Login = () => import('./views/login/Login.vue')
+const Directive = () => import('./views/directive/Directive.vue')
+Vue.use(Router)
+
+export default new Router({
+  routes: [
+    { path: '/', redirect: '/home/test', meta: { hidden: true } },
+    { path: '*', redirect: '/home/test', meta: { hidden: true } },
+    { path: '/login', component: Login, meta: { hidden: true } },
+    { path: '/404', component: () => import('./views/error/404.vue'), meta: { hidden: true } },
+    { path: '/401', component: () => import('./views/error/401.vue'), meta: { hidden: true } },
+    {
+      path: '/home',
+      name: 'home',
+      component: Home,
+      meta: { title: 'Table主键' },
+      children: [
         {
-            path: '/demo',
-            name: 'home',
-            component: Home,
-            meta: { title: '菜单1' },
-            children: [
-                {
-                    path: 'test',
-                    name: 'test',
-                    meta: { title: 'table主键测试' },
-                    component: Test
-                },
-                {
-                    path: 'test2',
-                    name: 'test2',
-                    meta: { title: '文章列表' },
-                    component: Test2
-                },
-                {
-                    path: 'demo',
-                    name: 'demo',
-                    meta: { title: 'demo' },
-                    component: Demo
-                },
-            ]
+          path: 'test',
+          name: 'test',
+          meta: { title: '测试', parent: 'Table主键' },
+          component: Test
         },
-    ]
-});
-router.beforeEach((to, from, next) => {
-    next();
-});
-router.afterEach((to, from) => {
-});
-export default router;
+        {
+          path: 'parent',
+          name: 'parent',
+          meta: { title: '跨级组件通信', parent: 'Table主键' },
+          component: Parent
+        },
+        {
+          path: 'directive',
+          name: 'directive',
+          meta: { title: '自定义指令', parent: 'Table主键' },
+          component: Directive
+        }
+      ]
+    }]
+})
