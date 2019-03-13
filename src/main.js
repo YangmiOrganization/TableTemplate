@@ -11,6 +11,16 @@ import 'nprogress/nprogress.css'// progress bar style
 import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 import TableLayout from './components/table/TableLayout'
 
+// 自动加载 global 目录下的 .vue 结尾的文件
+const componentsContext = require.context('./components/global', true, /\.vue/)
+componentsContext.keys().forEach(component => {
+  const componentConfig = componentsContext(component)
+  /**
+   * 兼容 import export 和 require module.export 两种规范
+   */
+  const ctrl = componentConfig.default || componentConfig
+  Vue.component(ctrl.name, ctrl)
+})
 Vue.component('TableLayout', TableLayout)
 Vue.config.productionTip = false
 
