@@ -1,6 +1,5 @@
 <template>
-  <div>
-    <base-form ref="base-form"  @submitSuccess="submitSuccess" :form="form" :formArray="formArray" :rules="rules" label-width="120px">
+  <base-form ref="base-form"  @submitSuccess="submitSuccess" :form="form" :formArray="formArray" :rules="rules" label-width="120px">
     <template slot="array">
       <el-form-item
         v-for="(item, index) in form.array"
@@ -19,8 +18,6 @@
       <el-button @click="add">新增</el-button>
     </el-form-item>
   </base-form>
-    <input v-model="arr[0].name"/>
-  </div>
 </template>
 
 <script>
