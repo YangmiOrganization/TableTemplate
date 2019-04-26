@@ -23,10 +23,9 @@
   </div>
 </template>
 <script>
-import BaseDialog from '../../components/dialog/base-dialog'
 export default {
   name: 'dialog-demo',
-  components: { BaseDialog },
+  components: { },
   props: {},
   data () {
     return {

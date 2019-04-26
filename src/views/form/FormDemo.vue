@@ -21,12 +21,10 @@
 </template>
 
 <script>
-import BaseForm from '@/components/form/base-form.vue'
 
 export default {
   name: 'form-demo',
   components: {
-    BaseForm
   },
   props: {},
   data () {

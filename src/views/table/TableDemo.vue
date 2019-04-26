@@ -1,7 +1,12 @@
 <!--suppress ALL -->
 <template>
   <!--table模板-->
-  <table-layout @sizeChange="handleSizeChange" @currentChange="handleCurrentChange" @handleRowClick="handleRowClick" @handleCellClick="handleCellClick"  :pageObj="pageObj" :headers="headers" @selectionChange="handleSelectionChange" :tableData="tableData">
+  <base-table-layout
+    :pageObj="pageObj"
+    :headers="headers"
+    :tableData="tableData"
+    @sizeChange="sizeChange"
+    @currentChange="currentChange">
     <template slot="top-left">
       <el-button type="primary">todo</el-button>
     </template>
@@ -31,17 +36,18 @@
       <el-button @click="handleView(scope.row)">查看</el-button>
       <el-button @click="handleDel(scope.row)">删除</el-button>
     </template>
-  </table-layout>
+  </base-table-layout>
 </template>
 
 <script>
-import { TABLE_MIXINS } from '../../mixins/table_mixins'
-import ArticleApi from '../../assets/api/article'
+import { Mixins } from '../../mixins/table_mixins'
+import ArticleApi from '../../api/module/ArticleApi'
 export default {
   name: 'test',
-  mixins: [ TABLE_MIXINS ],
+  mixins: [ Mixins ],
   data () {
     return {
+      ApiObject: ArticleApi,
       headers: [
         { type: 'selection' },
         { type: 'expand', slot: 'expand' },
@@ -63,40 +69,10 @@ export default {
   created () {
   },
   methods: {
-    init () {
-      console.log('init方法做一些其它事情')
-      this.getTableData()
-    },
-    getQueryParams () {
-      console.log('重写getQueryParams')
-      let queryParams = { ...this.queryParams, ...this.pageObj }
-      delete queryParams['total']
-      return queryParams
-    },
     async handleView (obj) {
       let res = await ArticleApi.getArticle()
       this.$message.success(`查看对象:${JSON.stringify(obj)}`)
-    },
-    handleDel (obj) {
-      this.$message.success(`删除对象:${JSON.stringify(obj)}`)
-    },
-    getTableData (pageObj) {
-      ArticleApi.getList(this.getQueryParams())
-        .then(res => {
-          pageObj = pageObj || this.pageObj
-          this.pageObj = pageObj || this.pageObj
-          this.pageObj.total = res.total
-          this.tableData = res.items
-        })
-    },
-    handleSelectionChange (val) {
-      console.log(val)
-    },
-    handleRowClick (row, event, column) {
-      console.log('点击行对象:%o', row)
-    },
-    handleCellClick (row, column, cell, event) {
-      console.log('点击单元格对象:%o', cell)
+      this.$message.success(`res:${JSON.stringify(res)}`)
     }
   }
 }

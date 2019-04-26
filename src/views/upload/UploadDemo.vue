@@ -35,10 +35,9 @@
   </div>
 </template>
 <script>
-import BaseUpload from './../../components/upload/base-upload'
 export default {
   name: 'upload-demo',
-  components: { BaseUpload },
+  components: { },
   props: {},
   data () {
     return {

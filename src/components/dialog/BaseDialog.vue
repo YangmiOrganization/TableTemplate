@@ -1,30 +1,32 @@
 <template>
   <el-dialog
+    :close-on-click-modal="false"
     v-bind="$attrs"
-    v-on="$listeners">
+    v-on="$listeners"
+  >
     <template slot="title">
-      <slot name="title"></slot>
+      <slot name="title" />
     </template>
-    <slot></slot>
+    <slot />
     <template slot="footer">
-      <slot name="footer"></slot>
+      <slot name="footer" />
     </template>
   </el-dialog>
 </template>
 <script>
 export default {
-  name: 'base-dialog',
+  name: 'BaseDialog',
   components: {},
   props: {},
   data () {
     return {}
   },
+  computed: {},
+  watch: {},
   created () {},
   mounted () {},
   activated () {},
-  methods: {},
-  computed: {},
-  watch: {}
+  methods: {}
 }
 </script>
 

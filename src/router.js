@@ -9,8 +9,8 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    { path: '/', redirect: '/home/test', meta: { hidden: true } },
-    { path: '*', redirect: '/home/test', meta: { hidden: true } },
+    { path: '/', redirect: '/demo/table', meta: { hidden: true } },
+    { path: '*', redirect: '/404', meta: { hidden: true } },
     { path: '/login', component: Login, meta: { hidden: true } },
     { path: '/404', component: () => import('./views/error/404.vue'), meta: { hidden: true } },
     { path: '/401', component: () => import('./views/error/401.vue'), meta: { hidden: true } },
@@ -48,7 +48,7 @@ export default new Router({
     },
     {
       path: '/test',
-      name: 'home',
+      name: 'Test',
       component: Home,
       meta: { title: '测试' },
       children: [
