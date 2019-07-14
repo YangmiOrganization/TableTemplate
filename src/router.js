@@ -8,6 +8,8 @@ const Directive = () => import('./views/directive/Directive.vue')
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
+  base: '/manager/',
   routes: [
     { path: '/', redirect: '/demo/table', meta: { hidden: true } },
     { path: '*', redirect: '/404', meta: { hidden: true } },
